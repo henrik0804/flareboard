@@ -21,5 +21,4 @@ class StatusService
 
         return CloudflareStatusResponse::fromArray($response->json());
     }
-
 }

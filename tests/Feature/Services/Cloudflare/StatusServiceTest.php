@@ -13,7 +13,7 @@ beforeEach(function () {
         'id' => 'yh6f0r4529hc',
         'name' => 'Cloudflare',
         'url' => 'https://www.cloudflarestatus.com',
-        'updated_at' => Date::now()
+        'updated_at' => Date::now(),
     ];
 });
 

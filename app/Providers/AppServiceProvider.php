@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
@@ -41,5 +40,4 @@ class AppServiceProvider extends ServiceProvider
                 ->withHeaders(['Accept' => 'application/json']);
         });
     }
-
 }

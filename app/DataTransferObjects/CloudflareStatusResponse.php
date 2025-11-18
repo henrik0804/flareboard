@@ -9,15 +9,13 @@ use Illuminate\Support\Facades\Date;
 final readonly class CloudflareStatusResponse
 {
     public function __construct(
-        public SummaryStatus   $status,
+        public SummaryStatus $status,
         public CarbonInterface $time,
-        public ?string         $message = null,
-        public ?array          $incidents = null,
-        public ?array          $components = null,
-        public ?array          $scheduledMaintenances = null,
-    )
-    {
-    }
+        public ?string $message = null,
+        public ?array $incidents = null,
+        public ?array $components = null,
+        public ?array $scheduledMaintenances = null,
+    ) {}
 
     public static function fromArray(array $data): self
     {
@@ -43,7 +41,7 @@ final readonly class CloudflareStatusResponse
 
     public function hasIncidents(): bool
     {
-        return !empty($this->incidents);
+        return ! empty($this->incidents);
     }
 
     public function status(): SummaryStatus
