@@ -1,20 +1,17 @@
 <?php
 
-namespace App\DataTransferObjects;
+namespace App\DataTransferObjects\Cloudflare;
 
 use App\Enums\Cloudflare\SummaryStatus;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\Date;
 
-final readonly class CloudflareStatusResponse
+final readonly class StatusResponse
 {
     public function __construct(
-        public SummaryStatus $status,
-        public CarbonInterface $time,
-        public ?string $message = null,
-        public ?array $incidents = null,
-        public ?array $components = null,
-        public ?array $scheduledMaintenances = null,
+        private SummaryStatus $status,
+        private CarbonInterface $time,
+        private ?string $message = null,
     ) {}
 
     public static function fromArray(array $data): self
@@ -23,9 +20,6 @@ final readonly class CloudflareStatusResponse
             status: SummaryStatus::from($data['status']['indicator']),
             time: Date::parse($data['page']['updated_at']),
             message: $data['status']['description'] ?? null,
-            incidents: $data['incidents'] ?? null,
-            components: $data['components'] ?? null,
-            scheduledMaintenances: $data['scheduled_maintenances'] ?? null,
         );
     }
 
@@ -39,13 +33,13 @@ final readonly class CloudflareStatusResponse
         return $this->message ?? 'No description available.';
     }
 
-    public function hasIncidents(): bool
-    {
-        return ! empty($this->incidents);
-    }
-
     public function status(): SummaryStatus
     {
         return $this->status;
+    }
+
+    public function updatedAt()
+    {
+        return $this->time;
     }
 }

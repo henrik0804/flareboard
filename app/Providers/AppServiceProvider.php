@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
@@ -24,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDates();
         $this->configureHttpMacros();
+        $this->configureModels();
     }
 
     private function configureDates(): void
@@ -39,5 +41,10 @@ class AppServiceProvider extends ServiceProvider
                 ->retry(3, 100)
                 ->withHeaders(['Accept' => 'application/json']);
         });
+    }
+
+    private function configureModels()
+    {
+        Model::unguard();
     }
 }
