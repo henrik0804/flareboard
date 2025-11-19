@@ -29,8 +29,8 @@ test('has correct casts', function () {
     $casts = $status->getCasts();
 
     expect($casts)
-        ->toHaveKey('started_at', 'timestamp')
-        ->toHaveKey('ended_at', 'timestamp')
-        ->toHaveKey('updated_at_cloudflare', 'timestamp')
+        ->toHaveKey('started_at', 'datetime')
+        ->toHaveKey('ended_at', 'datetime')
+        ->toHaveKey('updated_at_cloudflare', 'datetime')
         ->toHaveKey('status', SummaryStatus::class);
 });

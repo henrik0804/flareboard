@@ -8,26 +8,27 @@ use Livewire\Component;
 new class extends Component {
 
     #[Computed]
-    public function status(): ?CloudflareStatus
+    public function status(): CloudflareStatus
     {
-        $options = [
-            SummaryStatus::None,
-            SummaryStatus::Minor,
-            SummaryStatus::Major,
-            SummaryStatus::Critical,
-        ];
-        if (true) {
-            $status = CloudflareStatus::current()->first();
-            $status->status = $options[random_int(0, 3)];
-            return $status;
+        $status = CloudflareStatus::current()->first();
+        
+        if (!$status) {
+            // Return a default status when none exists
+            $status = new CloudflareStatus([
+                'status' => SummaryStatus::None,
+                'current_description' => 'Unable to fetch current system status.',
+                'updated_at_cloudflare' => null,
+                'started_at' => null,
+            ]);
         }
-        return CloudflareStatus::current()->first();
+        
+        return $status;
     }
 
     #[Computed]
     public function enumStatus(): SummaryStatus
     {
-        return $this->status?->status ?? SummaryStatus::None;
+        return $this->status->status;
     }
 };
 ?>
@@ -35,7 +36,6 @@ new class extends Component {
 <div
     {{ $attributes->merge(['class' => 'relative flex flex-col h-full transition-colors duration-300 ' . $this->enumStatus->backgroundClass()]) }} wire:poll>
 
-    {{-- Header --}}
     <div class="flex items-start justify-between p-5 pb-2">
         <div class="flex items-center gap-3">
             <div
@@ -82,7 +82,7 @@ new class extends Component {
 
     <div class="flex flex-1 flex-col justify-center px-5 py-1">
         <p class="line-clamp-2 text-sm font-medium leading-relaxed text-gray-700 dark:text-gray-300">
-            {{ $this->status?->current_description ?? 'Unable to fetch current system status.' }}
+            {{ $this->status->current_description }}
         </p>
     </div>
 
@@ -90,7 +90,7 @@ new class extends Component {
         class="mt-auto border-t border-gray-200/50 bg-white/50 px-5 py-3 backdrop-blur-sm dark:border-white/5 dark:bg-white/5">
         <div class="flex items-end justify-between gap-2">
             <div class="flex flex-col gap-1">
-                @if($this->status?->started_at)
+                @if($this->status->started_at)
                     <div
                         class="flex items-center gap-1.5 text-[11px] font-medium leading-none text-gray-500 dark:text-gray-400"
                         title="Incident started at {{ $this->status->started_at }}">
@@ -108,13 +108,13 @@ new class extends Component {
 
                 <div
                     class="flex items-center gap-1.5 text-[11px] font-medium leading-none text-gray-500 dark:text-gray-400"
-                    title="Last checked at {{ $this->status?->updated_at_cloudflare }}">
+                    title="Last checked at {{ $this->status->updated_at_cloudflare }}">
                     <svg class="h-3 w-3 shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round"
                               d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
                     </svg>
-                    <span>Updated {{ $this->status?->updated_at_cloudflare?->diffForHumans(null, true) ?? 'N/A' }}</span>
+                    <span>Updated {{ $this->status->updated_at_cloudflare ? $this->status->updated_at_cloudflare->diffForHumans(null, true) : 'N/A' }}</span>
                 </div>
             </div>
 
