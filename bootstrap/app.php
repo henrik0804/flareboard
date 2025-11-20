@@ -5,6 +5,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Spatie\UptimeMonitor\Commands\CheckUptime;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,4 +20,5 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })->withSchedule(function (Schedule $schedule): void {
         $schedule->command(SyncCloudflareStatusCommand::class)->everyThirtySeconds();
+        $schedule->command(CheckUptime::class)->everyThirtySeconds();
     })->create();

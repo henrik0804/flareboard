@@ -28,4 +28,7 @@ Route::middleware(['auth'])->group(function () {
             ),
         )
         ->name('two-factor.show');
+
+    Route::livewire('applications', 'pages::applications.index')->name('applications.index');
+    Route::livewire('applications/create', 'pages::applications.create')->name('applications.create');
 });

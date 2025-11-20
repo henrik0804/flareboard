@@ -14,6 +14,7 @@
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    <flux:navlist.item icon="window" :href="route('applications.index')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Applications') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
